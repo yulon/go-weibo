@@ -13,7 +13,7 @@ func NewStatuses(app *App) *Statuses {
 	return &Statuses{app}
 }
 
-func (s *Statuses) PublicTimeline(count int, page int, baseApp bool) (ret *StatusList) {
+func (s *Statuses) PublicTimeline(count int, page int, baseApp bool) []*Status {
 	p := &url.Values{}
 	p.Set("count", strconv.Itoa(count))
 	p.Set("page", strconv.Itoa(page))
@@ -22,7 +22,9 @@ func (s *Statuses) PublicTimeline(count int, page int, baseApp bool) (ret *Statu
 		ba = 1
 	}
 	p.Set("base_app", strconv.Itoa(ba))
-	ret = &StatusList{}
+	ret := &struct{
+		Statuses []*Status `json: statuses`
+	}{}
 	s.app.Get("statuses/public_timeline", p, ret)
-	return
+	return ret.Statuses
 }
