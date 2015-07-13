@@ -70,13 +70,13 @@ type User struct {
 }
 
 type Geo struct{
-	longitude string `json: longitude` //经度坐标
-	latitude string `json: latitude` //维度坐标
-	city string `json: city` //所在城市的城市代码
-	province string `json: province` //所在省份的省份代码
-	city_name string `json: city_name` //所在城市的城市名称
-	province_name string `json: province_name` //所在省份的省份名称
-	address string `json: address` //所在的实际地址，可以为空
-	pinyin string `json: pinyin` //地址的汉语拼音，不是所有情况都会返回该字段
-	more string `json: more` //更多信息，不是所有情况都会返回该字段
+	Longitude string `json: longitude` //经度坐标
+	Latitude string `json: latitude` //维度坐标
+	City string `json: city` //所在城市的城市代码
+	Province string `json: province` //所在省份的省份代码
+	CityName string `json: city_name` //所在城市的城市名称
+	ProvinceName string `json: province_name` //所在省份的省份名称
+	Address string `json: address` //所在的实际地址，可以为空
+	Pinyin string `json: pinyin` //地址的汉语拼音，不是所有情况都会返回该字段
+	More string `json: more` //更多信息，不是所有情况都会返回该字段
 }
