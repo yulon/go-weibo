@@ -80,3 +80,7 @@ type Geo struct{
 	pinyin string `json: pinyin` //地址的汉语拼音，不是所有情况都会返回该字段
 	more string `json: more` //更多信息，不是所有情况都会返回该字段
 }
+
+type StatusList struct {
+	Statuses []*Status `json: statuses`
+}
