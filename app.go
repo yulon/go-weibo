@@ -1,0 +1,26 @@
+package weibo
+
+import (
+	"net/http"
+	"net/url"
+	"encoding/json"
+)
+
+const (
+	api = "https://api.weibo.com/2"
+)
+
+type App struct{
+	accessToken string
+}
+
+func New(accessToken string) *App {
+	return &App{accessToken}
+}
+
+func (a *App) get(name string, param url.Values, ret interface{}) {
+	param.Set("access_token", a.accessToken)
+	resp, _ := http.Get(api + "/" + name + ".json?" + param.Encode())
+	d := json.NewDecoder(resp.Body)
+	d.Decode(ret)
+}
