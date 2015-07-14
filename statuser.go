@@ -9,7 +9,7 @@ type Statuser struct{
 	app *App
 }
 
-func NewStatuses(app *App) *Statuser {
+func NewStatuser(app *App) *Statuser {
 	return &Statuser{app}
 }
 
