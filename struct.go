@@ -79,6 +79,10 @@ type Geo struct{
 	Address string `json: address` //所在的实际地址，可以为空
 	Pinyin string `json: pinyin` //地址的汉语拼音，不是所有情况都会返回该字段
 	More string `json: more` //更多信息，不是所有情况都会返回该字段
+
+	//上面是官方给的数据结构但实测返回的都是下面两个属性
+	Type string `json: type`
+	Coordinates []float64 `json: coordinates`
 }
 
 type StatusCount struct {
