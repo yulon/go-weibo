@@ -112,6 +112,6 @@ type Comment struct {
 	User *User `json: user` //评论作者的用户信息字段
 	Mid int64 `json: mid` //评论的MID
 	Idstr string `json: idstr` //字符串型的评论ID
-	status *Status  `json: status` //评论的微博信息字段
+	Status *Status  `json: status` //评论的微博信息字段
 	reply_comment *Comment `json: status` //评论来源评论，当本评论属于对另一评论的回复时返回此字段
 }
