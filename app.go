@@ -61,3 +61,11 @@ func (a *App) GetId(name string, param *url.Values) string {
 	a.Get(name, param, ret)
 	return ret.Id
 }
+
+func (a *App) GetEmotions(typ string, language string) (e []*Emotion) { //获取微博官方表情的详细信息
+	p := &url.Values{}
+	p.Set("type", typ)
+	p.Set("language", language)
+	a.Get("emotions", p, e)
+	return
+}

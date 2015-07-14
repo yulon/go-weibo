@@ -82,8 +82,20 @@ type Geo struct{
 }
 
 type StatusCount struct {
-	Id int64 `json: id`//微博ID
+	Id int64 `json: id` //微博ID
 	Reposts int `json: reposts` //转发数
 	Comments int `json: comments` //评论数
 	Attitudes int `json: attitudes` //表态数
+}
+
+type Emotion struct {
+	Category string `json: category`
+	Common bool `json: common`
+	Hot bool `json: hot`
+	Icon string `json: icon`
+	Phrase string `json: phrase`
+	Picid string `json: picid`
+	Type string `json: type`
+	Url string `json: url`
+	Value string `json: value`
 }
