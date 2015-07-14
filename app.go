@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"bytes"
 	"mime/multipart"
+	"io"
 )
 
 const (
@@ -24,29 +25,38 @@ func NewApp(accessToken string) *App {
 	return &App{accessToken}
 }
 
-func (a *App) Get(apiName string, param url.Values, ret interface{}) {
-	param.Set("access_token", a.accessToken)
-	resp, _ := http.Get(MakeApiUrl(apiName) + "?" + param.Encode())
+func (a *App) Get(apiName string, params url.Values, ret interface{}) {
+	params.Set("access_token", a.accessToken)
+	resp, _ := http.Get(MakeApiUrl(apiName) + "?" + params.Encode())
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
 }
 
-func (a *App) PostForm(apiName string, param url.Values, ret interface{}) {
-	param.Set("access_token", a.accessToken)
-	resp, _ := http.PostForm(MakeApiUrl(apiName), param)
+func (a *App) PostForm(apiName string, params url.Values, ret interface{}) {
+	params.Set("access_token", a.accessToken)
+	resp, _ := http.PostForm(MakeApiUrl(apiName), params)
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
 }
 
-func (a *App) Post(apiName string, data map[string][]byte, ret interface{}) {
-	data["access_token"] = []byte(a.accessToken)
+type ReadNamer interface{
+	io.Reader
+	Name()string
+}
+
+func (a *App) Post(apiName string, params url.Values, files map[string]ReadNamer, ret interface{}) {
+	params.Set("access_token", a.accessToken)
 
 	buf := bytes.NewBuffer(make([]byte, 0, 256))
 	mw := multipart.NewWriter(buf)
 
-	for n, d := range data {
-		p, _ := mw.CreateFormField(n)
-		p.Write(d)
+	for n, _ := range params {
+		mw.WriteField(n, params.Get(n))
+	}
+
+	for n, f := range files {
+		w, _ := mw.CreateFormFile(n, f.Name())
+		io.Copy(w, f)
 	}
 
 	resp, _ := http.Post(MakeApiUrl(apiName), mw.FormDataContentType(), buf)

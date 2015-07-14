@@ -286,18 +286,19 @@ func (s *Statuser) Update(status string, visible int, listId string, lat float64
 }
 
 //上传图片并发布一条新微博
-func (s *Statuser) Upload(status string, visible int, listId string, pic []byte, lat float64, long float64, annotations string, rip string) (ret *Status) {
-	p := map[string][]byte{
-		"status": []byte(status),
-		"visible": []byte(strconv.Itoa(visible)),
-		"list_id": []byte(listId),
+func (s *Statuser) Upload(status string, visible int, listId string, pic ReadNamer, lat float64, long float64, annotations string, rip string) (ret *Status) {
+	p := url.Values{}
+	p.Set("status", status)
+	p.Set("visible", strconv.Itoa(visible))
+	p.Set("list_id", listId)
+	p.Set("lat", strconv.FormatFloat(lat, 'f', 10, 64))
+	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
+	p.Set("annotations", annotations)
+	p.Set("rip", rip)
+	f := map[string]ReadNamer{
 		"pic": pic,
-		"lat": []byte(strconv.FormatFloat(lat, 'f', 10, 64)),
-		"long": []byte(strconv.FormatFloat(long, 'f', 10, 64)),
-		"annotations": []byte(annotations),
-		"rip": []byte(rip),
 	}
-	s.app.Post("statuses/upload", p, ret)
+	s.app.Post("statuses/upload", p, f, ret)
 	return
 }
 
