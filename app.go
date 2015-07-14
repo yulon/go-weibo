@@ -74,7 +74,7 @@ func (a *App) GetEmotions(typ string, language string) (e []*Emotion) { //获取
 	return
 }
 
-func (a *App) Post(apiName string, param url.Values, ret interface{}) {
+func (a *App) PostForm(apiName string, param url.Values, ret interface{}) {
 	param.Set("access_token", a.accessToken)
 	resp, _ := http.PostForm(MakeApiUrl(apiName), param)
 	d := json.NewDecoder(resp.Body)
