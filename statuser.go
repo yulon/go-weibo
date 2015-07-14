@@ -291,6 +291,21 @@ func (s *Statuser) UploadUrlText(status string, visible int, listId string, urlT
 	return
 }
 
+//【高】使用已上传的图片发布一条新微博
+func (s *Statuser) UploadPicId(status string, visible int, listId string, picId string, lat float64, long float64, annotations string, rip string) (ret *Status) {
+	p := url.Values{}
+	p.Set("status", status)
+	p.Set("visible", strconv.Itoa(visible))
+	p.Set("list_id", listId)
+	p.Set("pic_id", picId)
+	p.Set("lat", strconv.FormatFloat(lat, 'f', 10, 64))
+	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
+	p.Set("annotations", annotations)
+	p.Set("rip", rip)
+	s.app.PostForm("statuses/upload_url_text", p, ret)
+	return
+}
+
 //【高】屏蔽某条微博
 func (s *Statuser) FilterCreate(id int64) (ret *Status) {
 	p := url.Values{}
