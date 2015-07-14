@@ -80,3 +80,10 @@ type Geo struct{
 	Pinyin string `json: pinyin` //地址的汉语拼音，不是所有情况都会返回该字段
 	More string `json: more` //更多信息，不是所有情况都会返回该字段
 }
+
+type StatusCount struct {
+	Id int64 `json: id`//微博ID
+	Reposts int `json: reposts` //转发数
+	Comments int `json: comments` //评论数
+	Attitudes int `json: attitudes` //表态数
+}
