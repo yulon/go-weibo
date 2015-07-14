@@ -32,3 +32,11 @@ func (a *App) GetStatuses(name string, param *url.Values) []*Status {
 	a.Get("statuses/public_timeline", param, ret)
 	return ret.Statuses
 }
+
+func (a *App) GetStatusesIds(name string, param *url.Values) []string {
+	ret := &struct{
+		Statuses []string `json: statuses`
+	}{}
+	a.Get("statuses/public_timeline", param, ret)
+	return ret.Statuses
+}
