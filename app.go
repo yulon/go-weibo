@@ -24,3 +24,11 @@ func (a *App) Get(name string, param *url.Values, ret interface{}) {
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
 }
+
+func (a *App) GetStatuses(name string, param *url.Values) []*Status {
+	ret := &struct{
+		Statuses []*Status `json: statuses`
+	}{}
+	a.Get("statuses/public_timeline", param, ret)
+	return ret.Statuses
+}
