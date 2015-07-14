@@ -88,3 +88,45 @@ func (c *Commenter) ShowBatch(cids int64) (cs []*Comment) {
 	c.app.Get("comments/show_batch", p, cs)
 	return
 }
+
+//写入接口
+
+//对一条微博进行评论
+func (c *Commenter) Create(comment string, id int64, commentOri int, rip string) (ret *Comment) {
+	p := url.Values{}
+	p.Set("comment", comment)
+	p.Set("id", strconv.FormatInt(id, 10))
+	p.Set("comment_ori", strconv.Itoa(commentOri))
+	p.Set("rip", rip)
+	c.app.PostForm("comments/create", p, ret)
+	return
+}
+
+//删除一条评论
+func (c *Commenter) Destroy(cid int64) (ret *Comment) {
+	p := url.Values{}
+	p.Set("cid", strconv.FormatInt(cid, 10))
+	c.app.PostForm("comments/destroy", p, ret)
+	return
+}
+
+//根据评论ID批量删除评论
+func (c *Commenter) DestroyBatch(cids string) (ret []*Comment) {
+	p := url.Values{}
+	p.Set("cids", cids)
+	c.app.PostForm("comments/destroy_batch", p, ret)
+	return
+}
+
+//回复一条评论
+func (c *Commenter) Reply(cid int64, id int64, comment string, withoutMention int, commentOri int, rip string) (ret []*Comment) {
+	p := url.Values{}
+	p.Set("cid", strconv.FormatInt(cid, 10))
+	p.Set("id", strconv.FormatInt(id, 10))
+	p.Set("comment", comment)
+	p.Set("without_mention", strconv.Itoa(withoutMention))
+	p.Set("comment_ori", strconv.Itoa(commentOri))
+	p.Set("rip", rip)
+	c.app.PostForm("comments/reply", p, ret)
+	return
+}
