@@ -31,43 +31,6 @@ func (a *App) Get(apiName string, param url.Values, ret interface{}) {
 	d.Decode(ret)
 }
 
-func (a *App) GetStatus(apiName string, param url.Values) (ret *Status) {
-	a.Get(apiName, param, ret)
-	return
-}
-
-func (a *App) GetStatuses(apiName string, param url.Values) []*Status {
-	ret := &struct{
-		Statuses []*Status `json: statuses`
-	}{}
-	a.Get(apiName, param, ret)
-	return ret.Statuses
-}
-
-func (a *App) GetStatusesIds(apiName string, param url.Values) []string {
-	ret := &struct{
-		Statuses []string `json: statuses`
-	}{}
-	a.Get(apiName, param, ret)
-	return ret.Statuses
-}
-
-func (a *App) GetMid(apiName string, param url.Values) string {
-	ret := &struct{
-		Mid string `json: mid`
-	}{}
-	a.Get(apiName, param, ret)
-	return ret.Mid
-}
-
-func (a *App) GetId(apiName string, param url.Values) string {
-	ret := &struct{
-		Id string `json: id`
-	}{}
-	a.Get(apiName, param, ret)
-	return ret.Id
-}
-
 func (a *App) PostForm(apiName string, param url.Values, ret interface{}) {
 	param.Set("access_token", a.accessToken)
 	resp, _ := http.PostForm(MakeApiUrl(apiName), param)
