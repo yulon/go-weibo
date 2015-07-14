@@ -216,6 +216,15 @@ func (s *Statuser) Go(uid int64, id int64) string {
 	return "http://api.weibo.com/2/statuses/go?" + p.Encode()
 }
 
+//获取微博官方表情的详细信息
+func (s *Statuser) Emotions(typ string, language string) (e []*Emotion) {
+	p := url.Values{}
+	p.Set("type", typ)
+	p.Set("language", language)
+	s.app.Get("emotions", p, e)
+	return
+}
+
 //写入接口
 
 //转发一条微博

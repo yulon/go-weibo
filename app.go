@@ -68,15 +68,6 @@ func (a *App) GetId(apiName string, param url.Values) string {
 	return ret.Id
 }
 
-//获取微博官方表情的详细信息
-func (a *App) GetEmotions(typ string, language string) (e []*Emotion) {
-	p := url.Values{}
-	p.Set("type", typ)
-	p.Set("language", language)
-	a.Get("emotions", p, e)
-	return
-}
-
 func (a *App) PostForm(apiName string, param url.Values, ret interface{}) {
 	param.Set("access_token", a.accessToken)
 	resp, _ := http.PostForm(MakeApiUrl(apiName), param)
