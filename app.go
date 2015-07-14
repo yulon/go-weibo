@@ -26,7 +26,6 @@ func (a *App) Get(name string, param *url.Values, ret interface{}) {
 }
 
 func (a *App) GetStatus(name string, param *url.Values) (ret *Status) {
-	ret = &Status{}
 	a.Get(name, param, ret)
 	return
 }
@@ -45,4 +44,20 @@ func (a *App) GetStatusesIds(name string, param *url.Values) []string {
 	}{}
 	a.Get(name, param, ret)
 	return ret.Statuses
+}
+
+func (a *App) GetMid(name string, param *url.Values) string {
+	ret := &struct{
+		Mid string `json: mid`
+	}{}
+	a.Get(name, param, ret)
+	return ret.Mid
+}
+
+func (a *App) GetId(name string, param *url.Values) string {
+	ret := &struct{
+		Id string `json: id`
+	}{}
+	a.Get(name, param, ret)
+	return ret.Id
 }
