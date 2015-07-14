@@ -2,7 +2,7 @@ package weibo
 
 type Status struct {
 	CreatedAt string `json: created_at` //微博创建时间
-	Id int64 `json: id`//微博ID
+	Id int64 `json: id` //微博ID
 	Mid int64 `json: mid` //微博MID
 	Idstr string `json: idstr` //字符串型的微博ID
 	Text string `json: text` //微博信息内容
@@ -102,4 +102,16 @@ type Emotion struct {
 	Type string `json: type`
 	Url string `json: url`
 	Value string `json: value`
+}
+
+type Comment struct {
+	CreatedAt string `json: created_at` //评论创建时间
+	Id int64 `json: id` //评论的ID
+	Text string `json: text` //评论的内容
+	Source string `json: source` //评论的来源
+	User *User `json: user` //评论作者的用户信息字段
+	Mid int64 `json: mid` //评论的MID
+	Idstr string `json: idstr` //字符串型的评论ID
+	status *Status  `json: status` //评论的微博信息字段
+	reply_comment *Comment `json: status` //评论来源评论，当本评论属于对另一评论的回复时返回此字段
 }
