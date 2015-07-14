@@ -206,6 +206,70 @@ func (s *Statuses) Repost(id int64, status string, isComment int, rip string) (r
 	p.Set("status", status)
 	p.Set("is_comment", strconv.Itoa(isComment))
 	p.Set("rip", rip)
-	s.app.Post("statuses/repost", p, ret)
+	s.app.PostForm("statuses/repost", p, ret)
+	return
+}
+
+func (s *Statuses) Destroy(id int64) (ret *Status) { //根据微博ID删除指定微博
+	p := url.Values{}
+	p.Set("id", strconv.FormatInt(id, 10))
+	s.app.PostForm("statuses/destroy", p, ret)
+	return
+}
+
+func (s *Statuses) Update(status string, visible int, listId string, lat float64, long float64, annotations string, rip string) (ret *Status) { //发布一条新微博
+	p := url.Values{}
+	p.Set("status", status)
+	p.Set("visible", strconv.Itoa(visible))
+	p.Set("list_id", listId)
+	p.Set("lat", strconv.FormatFloat(lat, 'f', 10, 64))
+	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
+	p.Set("annotations", annotations)
+	p.Set("rip", rip)
+	s.app.PostForm("statuses/update", p, ret)
+	return
+}
+
+func (s *Statuses) Upload(status string, visible int, listId string, pic []byte, lat float64, long float64, annotations string, rip string) (ret *Status) { //上传图片并发布一条新微博
+	p := map[string][]byte{
+		"status": []byte(status),
+		"visible": []byte(strconv.Itoa(visible)),
+		"list_id": []byte(listId),
+		"pic": pic,
+		"lat": []byte(strconv.FormatFloat(lat, 'f', 10, 64)),
+		"long": []byte(strconv.FormatFloat(long, 'f', 10, 64)),
+		"annotations": []byte(annotations),
+		"rip": []byte(rip),
+	}
+	s.app.Post("statuses/upload", p, ret)
+	return
+}
+
+func (s *Statuses) UploadUrlText(status string, visible int, listId string, urlText string, lat float64, long float64, annotations string, rip string) (ret *Status) { //【高】指定一个图片URL地址抓取后上传并同时发布一条新微博
+	p := url.Values{}
+	p.Set("status", status)
+	p.Set("visible", strconv.Itoa(visible))
+	p.Set("list_id", listId)
+	p.Set("url", urlText)
+	p.Set("lat", strconv.FormatFloat(lat, 'f', 10, 64))
+	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
+	p.Set("annotations", annotations)
+	p.Set("rip", rip)
+	s.app.PostForm("statuses/upload_url_text", p, ret)
+	return
+}
+
+func (s *Statuses) FilterCreate(id int64) (ret *Status) { //【高】屏蔽某条微博
+	p := url.Values{}
+	p.Set("id", strconv.FormatInt(id, 10))
+	s.app.PostForm("statuses/filter/create", p, ret)
+	return
+}
+
+func (s *Statuses) MentionsShield(id int64, followUp int) (ret *Status) { //【高】屏蔽某个@到我的微博以及后续由对其转发引起的@提及
+	p := url.Values{}
+	p.Set("id", strconv.FormatInt(id, 10))
+	p.Set("follow_up", strconv.Itoa(followUp))
+	s.app.PostForm("statuses/mentions/shield", p, ret)
 	return
 }
