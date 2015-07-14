@@ -5,17 +5,17 @@ import (
 	"strconv"
 )
 
-type Statuses struct{
+type Statuser struct{
 	app *App
 }
 
-func NewStatuses(app *App) *Statuses {
-	return &Statuses{app}
+func NewStatuses(app *App) *Statuser {
+	return &Statuser{app}
 }
 
 //读取接口
 
-func (s *Statuses) PublicTimeline(count int, page int, baseApp int) []*Status { //返回最新的公共微博
+func (s *Statuser) PublicTimeline(count int, page int, baseApp int) []*Status { //返回最新的公共微博
 	p := url.Values{}
 	p.Set("count", strconv.Itoa(count))
 	p.Set("page", strconv.Itoa(page))
@@ -23,7 +23,7 @@ func (s *Statuses) PublicTimeline(count int, page int, baseApp int) []*Status { 
 	return s.app.GetStatuses("statuses/public_timeline", p)
 }
 
-func (s *Statuses) FriendsTimeline(sinceId int64, maxId int64, count int, page int, baseApp int, feature int, trimUser int) []*Status { //获取当前登录用户及其所关注用户的最新微博
+func (s *Statuser) FriendsTimeline(sinceId int64, maxId int64, count int, page int, baseApp int, feature int, trimUser int) []*Status { //获取当前登录用户及其所关注用户的最新微博
 	p := url.Values{}
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
 	p.Set("max_id", strconv.FormatInt(maxId, 10))
@@ -35,7 +35,7 @@ func (s *Statuses) FriendsTimeline(sinceId int64, maxId int64, count int, page i
 	return s.app.GetStatuses("statuses/friends_timeline", p)
 }
 
-func (s *Statuses) HomeTimeline(sinceId int64, maxId int64, count int, page int, baseApp int, feature int, trimUser int) []*Status { //获取当前登录用户及其所关注用户的最新微博
+func (s *Statuser) HomeTimeline(sinceId int64, maxId int64, count int, page int, baseApp int, feature int, trimUser int) []*Status { //获取当前登录用户及其所关注用户的最新微博
 	p := url.Values{}
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
 	p.Set("max_id", strconv.FormatInt(maxId, 10))
@@ -47,7 +47,7 @@ func (s *Statuses) HomeTimeline(sinceId int64, maxId int64, count int, page int,
 	return s.app.GetStatuses("statuses/home_timeline", p)
 }
 
-func (s *Statuses) FriendsTimelineIds(sinceId int64, maxId int64, count int, page int, baseApp int, feature int) []string { //获取当前登录用户及其所关注用户的最新微博的ID
+func (s *Statuser) FriendsTimelineIds(sinceId int64, maxId int64, count int, page int, baseApp int, feature int) []string { //获取当前登录用户及其所关注用户的最新微博的ID
 	p := url.Values{}
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
 	p.Set("max_id", strconv.FormatInt(maxId, 10))
@@ -58,7 +58,7 @@ func (s *Statuses) FriendsTimelineIds(sinceId int64, maxId int64, count int, pag
 	return s.app.GetStatusesIds("statuses/friends_timeline/ids", p)
 }
 
-func (s *Statuses) UserTimeline(uid int64, screenName string, sinceId int64, maxId int64, count int, page int, baseApp int, feature int) []*Status { //获取某个用户最新发表的微博列表
+func (s *Statuser) UserTimeline(uid int64, screenName string, sinceId int64, maxId int64, count int, page int, baseApp int, feature int) []*Status { //获取某个用户最新发表的微博列表
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
 	p.Set("screen_name", screenName)
@@ -71,7 +71,7 @@ func (s *Statuses) UserTimeline(uid int64, screenName string, sinceId int64, max
 	return s.app.GetStatuses("statuses/user_timeline", p)
 }
 
-func (s *Statuses) UserTimelineIds(uid int64, screenName string, sinceId int64, maxId int64, count int, page int, baseApp int, feature int) []string { //获取用户发布的微博的ID
+func (s *Statuser) UserTimelineIds(uid int64, screenName string, sinceId int64, maxId int64, count int, page int, baseApp int, feature int) []string { //获取用户发布的微博的ID
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
 	p.Set("screen_name", screenName)
@@ -84,7 +84,7 @@ func (s *Statuses) UserTimelineIds(uid int64, screenName string, sinceId int64, 
 	return s.app.GetStatusesIds("statuses/user_timeline/ids", p)
 }
 
-func (s *Statuses) TimelineBatch(uids string, screenNames string, count int, page int, baseApp int, feature int) []*Status { //【高】批量获取指定的一批用户的微博列表
+func (s *Statuser) TimelineBatch(uids string, screenNames string, count int, page int, baseApp int, feature int) []*Status { //【高】批量获取指定的一批用户的微博列表
 	p := url.Values{}
 	p.Set("uids", uids)
 	p.Set("screen_names", screenNames)
@@ -95,7 +95,7 @@ func (s *Statuses) TimelineBatch(uids string, screenNames string, count int, pag
 	return s.app.GetStatuses("statuses/timeline_batch", p)
 }
 
-func (s *Statuses) RepostTimeline(id int64, sinceId int64, maxId int64, count int, page int, filterByAuthor int) []*Status { //获取指定微博的转发微博列表
+func (s *Statuser) RepostTimeline(id int64, sinceId int64, maxId int64, count int, page int, filterByAuthor int) []*Status { //获取指定微博的转发微博列表
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
@@ -106,7 +106,7 @@ func (s *Statuses) RepostTimeline(id int64, sinceId int64, maxId int64, count in
 	return s.app.GetStatuses("statuses/repost_timeline", p)
 }
 
-func (s *Statuses) RepostTimelineIds(id int64, sinceId int64, maxId int64, count int, page int, filterByAuthor int) []string { //获取一条原创微博的最新转发微博的ID
+func (s *Statuser) RepostTimelineIds(id int64, sinceId int64, maxId int64, count int, page int, filterByAuthor int) []string { //获取一条原创微博的最新转发微博的ID
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
@@ -117,7 +117,7 @@ func (s *Statuses) RepostTimelineIds(id int64, sinceId int64, maxId int64, count
 	return s.app.GetStatusesIds("statuses/repost_timeline/ids", p)
 }
 
-func (s *Statuses) Mentions(sinceId int64, maxId int64, count int, page int, filterByAuthor int, filterBySource int, filterByType int) []*Status { //获取最新的提到登录用户的微博列表，即@我的微博
+func (s *Statuser) Mentions(sinceId int64, maxId int64, count int, page int, filterByAuthor int, filterBySource int, filterByType int) []*Status { //获取最新的提到登录用户的微博列表，即@我的微博
 	p := url.Values{}
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
 	p.Set("max_id", strconv.FormatInt(maxId, 10))
@@ -129,7 +129,7 @@ func (s *Statuses) Mentions(sinceId int64, maxId int64, count int, page int, fil
 	return s.app.GetStatuses("statuses/mentions", p)
 }
 
-func (s *Statuses) MentionsIds(sinceId int64, maxId int64, count int, page int, filterByAuthor int, filterBySource int, filterByType int) []string { //获取@当前用户的最新微博的ID
+func (s *Statuser) MentionsIds(sinceId int64, maxId int64, count int, page int, filterByAuthor int, filterBySource int, filterByType int) []string { //获取@当前用户的最新微博的ID
 	p := url.Values{}
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
 	p.Set("max_id", strconv.FormatInt(maxId, 10))
@@ -141,7 +141,7 @@ func (s *Statuses) MentionsIds(sinceId int64, maxId int64, count int, page int, 
 	return s.app.GetStatusesIds("statuses/mentions/ids", p)
 }
 
-func (s *Statuses) BilateralTimeline(sinceId int64, maxId int64, count int, page int, baseApp int, feature int, trimUser int) []*Status { //获取双向关注用户的最新微博
+func (s *Statuser) BilateralTimeline(sinceId int64, maxId int64, count int, page int, baseApp int, feature int, trimUser int) []*Status { //获取双向关注用户的最新微博
 	p := url.Values{}
 	p.Set("since_id", strconv.FormatInt(sinceId, 10))
 	p.Set("max_id", strconv.FormatInt(maxId, 10))
@@ -153,20 +153,20 @@ func (s *Statuses) BilateralTimeline(sinceId int64, maxId int64, count int, page
 	return s.app.GetStatuses("statuses/bilateral_timeline", p)
 }
 
-func (s *Statuses) Show(id int64) *Status { //根据微博ID获取单条微博内容
+func (s *Statuser) Show(id int64) *Status { //根据微博ID获取单条微博内容
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	return s.app.GetStatus("statuses/show", p)
 }
 
-func (s *Statuses) ShowBatch(ids string, trimUser int) []*Status { //【高】根据微博ID获取单条微博内容
+func (s *Statuser) ShowBatch(ids string, trimUser int) []*Status { //【高】根据微博ID获取单条微博内容
 	p := url.Values{}
 	p.Set("ids", ids)
 	p.Set("trim_user", strconv.Itoa(trimUser))
 	return s.app.GetStatuses("statuses/show_batch", p)
 }
 
-func (s *Statuses) Querymid(id int64, typ int, isBatch int) string { //通过微博（评论、私信）ID获取其MID
+func (s *Statuser) Querymid(id int64, typ int, isBatch int) string { //通过微博（评论、私信）ID获取其MID
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("type", strconv.Itoa(typ))
@@ -174,7 +174,7 @@ func (s *Statuses) Querymid(id int64, typ int, isBatch int) string { //通过微
 	return s.app.GetMid("statuses/querymid", p)
 }
 
-func (s *Statuses) Queryid(mid string, typ int, isBatch int, inbox int, isBase62 int) string { //通过微博（评论、私信）MID获取其ID
+func (s *Statuser) Queryid(mid string, typ int, isBatch int, inbox int, isBase62 int) string { //通过微博（评论、私信）MID获取其ID
 	p := url.Values{}
 	p.Set("mid", mid)
 	p.Set("type", strconv.Itoa(typ))
@@ -184,14 +184,14 @@ func (s *Statuses) Queryid(mid string, typ int, isBatch int, inbox int, isBase62
 	return s.app.GetId("statuses/queryid", p)
 }
 
-func (s *Statuses) Count(ids string) (scs []*StatusCount) { //批量获取指定微博的转发数评论数
+func (s *Statuser) Count(ids string) (scs []*StatusCount) { //批量获取指定微博的转发数评论数
 	p := url.Values{}
 	p.Set("ids", ids)
 	s.app.Get("statuses/count", p, scs)
 	return
 }
 
-func (s *Statuses) Go(uid int64, id int64) string { //生成根据ID跳转到单条微博页的URL
+func (s *Statuser) Go(uid int64, id int64) string { //生成根据ID跳转到单条微博页的URL
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
 	p.Set("id", strconv.FormatInt(id, 10))
@@ -200,7 +200,7 @@ func (s *Statuses) Go(uid int64, id int64) string { //生成根据ID跳转到单
 
 //写入接口
 
-func (s *Statuses) Repost(id int64, status string, isComment int, rip string) (ret *Status) { //转发一条微博
+func (s *Statuser) Repost(id int64, status string, isComment int, rip string) (ret *Status) { //转发一条微博
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("status", status)
@@ -210,14 +210,14 @@ func (s *Statuses) Repost(id int64, status string, isComment int, rip string) (r
 	return
 }
 
-func (s *Statuses) Destroy(id int64) (ret *Status) { //根据微博ID删除指定微博
+func (s *Statuser) Destroy(id int64) (ret *Status) { //根据微博ID删除指定微博
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	s.app.PostForm("statuses/destroy", p, ret)
 	return
 }
 
-func (s *Statuses) Update(status string, visible int, listId string, lat float64, long float64, annotations string, rip string) (ret *Status) { //发布一条新微博
+func (s *Statuser) Update(status string, visible int, listId string, lat float64, long float64, annotations string, rip string) (ret *Status) { //发布一条新微博
 	p := url.Values{}
 	p.Set("status", status)
 	p.Set("visible", strconv.Itoa(visible))
@@ -230,7 +230,7 @@ func (s *Statuses) Update(status string, visible int, listId string, lat float64
 	return
 }
 
-func (s *Statuses) Upload(status string, visible int, listId string, pic []byte, lat float64, long float64, annotations string, rip string) (ret *Status) { //上传图片并发布一条新微博
+func (s *Statuser) Upload(status string, visible int, listId string, pic []byte, lat float64, long float64, annotations string, rip string) (ret *Status) { //上传图片并发布一条新微博
 	p := map[string][]byte{
 		"status": []byte(status),
 		"visible": []byte(strconv.Itoa(visible)),
@@ -245,7 +245,7 @@ func (s *Statuses) Upload(status string, visible int, listId string, pic []byte,
 	return
 }
 
-func (s *Statuses) UploadUrlText(status string, visible int, listId string, urlText string, lat float64, long float64, annotations string, rip string) (ret *Status) { //【高】指定一个图片URL地址抓取后上传并同时发布一条新微博
+func (s *Statuser) UploadUrlText(status string, visible int, listId string, urlText string, lat float64, long float64, annotations string, rip string) (ret *Status) { //【高】指定一个图片URL地址抓取后上传并同时发布一条新微博
 	p := url.Values{}
 	p.Set("status", status)
 	p.Set("visible", strconv.Itoa(visible))
@@ -259,14 +259,14 @@ func (s *Statuses) UploadUrlText(status string, visible int, listId string, urlT
 	return
 }
 
-func (s *Statuses) FilterCreate(id int64) (ret *Status) { //【高】屏蔽某条微博
+func (s *Statuser) FilterCreate(id int64) (ret *Status) { //【高】屏蔽某条微博
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	s.app.PostForm("statuses/filter/create", p, ret)
 	return
 }
 
-func (s *Statuses) MentionsShield(id int64, followUp int) (ret *Status) { //【高】屏蔽某个@到我的微博以及后续由对其转发引起的@提及
+func (s *Statuser) MentionsShield(id int64, followUp int) (ret *Status) { //【高】屏蔽某个@到我的微博以及后续由对其转发引起的@提及
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("follow_up", strconv.Itoa(followUp))
