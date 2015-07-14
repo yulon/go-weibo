@@ -25,11 +25,17 @@ func (a *App) Get(name string, param *url.Values, ret interface{}) {
 	d.Decode(ret)
 }
 
+func (a *App) GetStatus(name string, param *url.Values) (ret *Status) {
+	ret = &Status{}
+	a.Get(name, param, ret)
+	return
+}
+
 func (a *App) GetStatuses(name string, param *url.Values) []*Status {
 	ret := &struct{
 		Statuses []*Status `json: statuses`
 	}{}
-	a.Get("statuses/public_timeline", param, ret)
+	a.Get(name, param, ret)
 	return ret.Statuses
 }
 
@@ -37,6 +43,6 @@ func (a *App) GetStatusesIds(name string, param *url.Values) []string {
 	ret := &struct{
 		Statuses []string `json: statuses`
 	}{}
-	a.Get("statuses/public_timeline", param, ret)
+	a.Get(name, param, ret)
 	return ret.Statuses
 }
