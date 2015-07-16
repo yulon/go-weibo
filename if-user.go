@@ -46,3 +46,11 @@ func (ifu *IfUser) Counts(uids string) (us []*UserCounts) {
 	ifu.app.Get("users/counts", p, us)
 	return
 }
+
+//获取用户等级信息
+func (ifu *IfUser) ShowRank(uid int64) (ur *UserRank) {
+	p := url.Values{}
+	p.Set("uid", strconv.FormatInt(uid, 10))
+	ifu.app.Get("users/show_rank", p, ur)
+	return
+}

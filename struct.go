@@ -76,6 +76,11 @@ type UserCounts struct {
 	StatusesCount int `json: statuses_count` //微博数
 }
 
+type UserRank struct {
+	Uid int64 `json: uid` //用户UID
+	Rank int `json: rank` //粉丝数
+}
+
 type Geo struct{
 	Longitude string `json: longitude` //经度坐标
 	Latitude string `json: latitude` //维度坐标
