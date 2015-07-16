@@ -115,3 +115,19 @@ type Comment struct {
 	Status *Status  `json: status` //评论的微博信息字段
 	ReplyComment *Comment `json: reply_comment` //评论来源评论，当本评论属于对另一评论的回复时返回此字段
 }
+
+type Remind struct {
+	Status int `json: status` //新微博未读数
+	Follower int `json: follower` //新粉丝数
+	Cmt int `json: cmt` //新评论数
+	Dm int `json: dm` //新私信数
+	MentionStatus int `json: mention_status` //新提及我的微博数
+	MentionCmt int `json: mention_cmt` //新提及我的评论数
+	Group int `json: group` //微群消息未读数
+	PrivateGroup int `json: private_group` //私有微群消息未读数
+	Notice int `json: notice` //新通知未读数
+	Invite int `json: invite` //新邀请未读数
+	Badge int `json: badge` //新勋章数
+	Photo int `json: photo` //相册消息未读数
+	Msgbox int `json: msgbox` //{{{3}}}
+}
