@@ -69,6 +69,13 @@ type User struct {
 	Lang string `json: lang` //用户当前的语言版本，zh-cn：简体中文，zh-tw：繁体中文，en：英语
 }
 
+type UserCounts struct {
+	Id int64 `json: id` //用户UID
+	FollowersCount int `json: followers_count` //粉丝数
+	FriendsCount int `json: friends_count` //关注数
+	StatusesCount int `json: statuses_count` //微博数
+}
+
 type Geo struct{
 	Longitude string `json: longitude` //经度坐标
 	Latitude string `json: latitude` //维度坐标
