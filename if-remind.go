@@ -5,33 +5,33 @@ import (
 	"strconv"
 )
 
-type Reminder struct{
+type IfRemind struct{
 	app *App
 }
 
-func NewReminder(app *App) *Reminder {
-	return &Reminder{app}
+func NewIfRemind(app *App) *IfRemind {
+	return &IfRemind{app}
 }
 
 //读取接口
 
 //获取某个用户的各种消息未读数
-func (r *Reminder) UnreadCount(uid int64) (ret *Remind) {
+func (ifr *IfRemind) UnreadCount(uid int64) (r *Remind) {
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
-	r.app.Get("remind/unread_count", p, ret)
+	ifr.app.Get("remind/unread_count", p, r)
 	return
 }
 
 //写入接口
 
 //对当前登录用户某一种消息未读数进行清零
-func (r *Reminder) SetCount(typ string) bool {
+func (ifr *IfRemind) SetCount(typ string) bool {
 	p := url.Values{}
 	p.Set("type", typ)
 	ret := &struct{
 		Result bool `json: result`
 	}{}
-	r.app.PostForm("remind/set_count", p, ret)
+	ifr.app.PostForm("remind/set_count", p, ret)
 	return ret.Result
 }
