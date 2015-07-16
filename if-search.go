@@ -66,7 +66,7 @@ func (ifs *IfSearch) SuggestionsAtUsers(q string, count int, typ int, rang int) 
 //搜索话题接口
 
 //搜索某一话题下的微博
-func (ifs *IfSearch) topics(q string, count int, page int) []*Status {
+func (ifs *IfSearch) Topics(q string, count int, page int) []*Status {
 	p := url.Values{}
 	p.Set("q", url.QueryEscape(q))
 	p.Set("count", strconv.Itoa(count))
