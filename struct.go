@@ -92,7 +92,7 @@ type Geo struct{
 	Coordinates []float64 `json: coordinates`
 }
 
-type StatusCount struct {
+type StatusCounts struct {
 	Id int64 `json: id` //微博ID
 	Reposts int `json: reposts` //转发数
 	Comments int `json: comments` //评论数

@@ -226,7 +226,7 @@ func (ifs *IfStatus) Queryid(mid string, typ int, isBatch int, inbox int, isBase
 }
 
 //批量获取指定微博的转发数评论数
-func (ifs *IfStatus) Count(ids string) (scs []*StatusCount) {
+func (ifs *IfStatus) Count(ids string) (scs []*StatusCounts) {
 	p := url.Values{}
 	p.Set("ids", ids)
 	ifs.app.Get("statuses/count", p, scs)
