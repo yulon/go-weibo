@@ -17,7 +17,7 @@ func NewIfComment(app *App) *IfComment {
 
 func (ifc *IfComment) getComments(apiName string, param url.Values) []*Comment {
 	ret := &struct{
-		Comments []*Comment `json: comments`
+		Comments []*Comment `json:"comments"`
 	}{}
 	ifc.app.Get(apiName, param, ret)
 	return ret.Comments

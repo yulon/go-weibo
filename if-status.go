@@ -17,7 +17,7 @@ func NewIfStatus(app *App) *IfStatus {
 
 func (ifs *IfStatus) getStatuses(apiName string, param url.Values) []*Status {
 	ret := &struct{
-		Statuses []*Status `json: statuses`
+		Statuses []*Status `json:"statuses"`
 	}{}
 	ifs.app.Get(apiName, param, ret)
 	return ret.Statuses
@@ -25,7 +25,7 @@ func (ifs *IfStatus) getStatuses(apiName string, param url.Values) []*Status {
 
 func (ifs *IfStatus) getStatusesIds(apiName string, param url.Values) []string {
 	ret := &struct{
-		Statuses []string `json: statuses`
+		Statuses []string `json:"statuses"`
 	}{}
 	ifs.app.Get(apiName, param, ret)
 	return ret.Statuses
@@ -204,7 +204,7 @@ func (ifs *IfStatus) Querymid(id int64, typ int, isBatch int) string {
 	p.Set("type", strconv.Itoa(typ))
 	p.Set("is_batch", strconv.Itoa(isBatch))
 	ret := &struct{
-		Mid string `json: mid`
+		Mid string `json:"mid"`
 	}{}
 	ifs.app.Get("statuses/querymid", p, ret)
 	return ret.Mid
@@ -219,7 +219,7 @@ func (ifs *IfStatus) Queryid(mid string, typ int, isBatch int, inbox int, isBase
 	p.Set("inbox", strconv.Itoa(inbox))
 	p.Set("isBase62", strconv.Itoa(isBase62))
 	ret := &struct{
-		Id string `json: id`
+		Id string `json:"id"`
 	}{}
 	ifs.app.Get("statuses/queryid", p, ret)
 	return ret.Id

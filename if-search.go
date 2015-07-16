@@ -72,7 +72,7 @@ func (ifs *IfSearch) Topics(q string, count int, page int) []*Status {
 	p.Set("count", strconv.Itoa(count))
 	p.Set("page", strconv.Itoa(page))
 	ret := &struct{
-		Statuses []*Status `json: statuses`
+		Statuses []*Status `json:"statuses"`
 	}{}
 	ifs.app.Get("search/topics", p, ret)
 	return ret.Statuses
