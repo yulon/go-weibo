@@ -143,3 +143,31 @@ type Remind struct {
 	Photo int `json: photo` //相册消息未读数
 	Msgbox int `json: msgbox` //{{{3}}}
 }
+
+type InfoUser struct {
+	ScreenName string `json: screen_name` //用户昵称
+	FollowersCount int `json: followers_count` //粉丝数
+	Uid int64 `json: uid` //用户UID
+}
+
+type InfoSchool struct {
+	Name string `json: school_name`
+	Location int `json: location`
+	Id int64 `json: id`
+	Type int `json: type` //学校类型，0：全部、1：大学、2：高中、3：中专技校、4：初中、5：小学
+}
+
+type InfoCompanie struct {
+	Name string `json: suggestion`
+}
+
+type InfoApp struct {
+	Name string `json: apps_name`
+	MembersCount string `json: members_count`
+}
+
+type InfoAtUser struct {
+	Uid int64 `json: uid`
+	Nickname string `json: nickname`
+	Remark string `json: remark`
+}
