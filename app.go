@@ -44,7 +44,7 @@ type ReadNamer interface{
 	Name()string
 }
 
-func (a *App) Post(apiName string, params url.Values, files map[string]ReadNamer, ret interface{}) {
+func (a *App) PostFormData(apiName string, params url.Values, files map[string]ReadNamer, ret interface{}) {
 	params.Set("access_token", a.accessToken)
 
 	buf := bytes.NewBuffer(make([]byte, 0, 256))

@@ -298,7 +298,7 @@ func (ifs *IfStatus) Upload(status string, visible int, listId string, pic ReadN
 	f := map[string]ReadNamer{
 		"pic": pic,
 	}
-	ifs.app.Post("statuses/upload", p, f, s)
+	ifs.app.PostFormData("statuses/upload", p, f, s)
 	return
 }
 
