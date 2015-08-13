@@ -182,11 +182,12 @@ func (ifs *IfStatus) BilateralTimeline(sinceId int64, maxId int64, count int, pa
 }
 
 //根据微博ID获取单条微博内容
-func (ifs *IfStatus) Show(id int64) (ret *Status) {
+func (ifs *IfStatus) Show(id int64) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
-	ifs.app.Get("statuses/show", p, ret)
-	return
+	s := &Status{}
+	ifs.app.Get("statuses/show", p, s)
+	return s
 }
 
 //【高】根据微博ID获取单条微博内容
@@ -253,26 +254,28 @@ func (ifs *IfStatus) Emotions(typ string, language string) (es []*Emotion) {
 //写入接口
 
 //转发一条微博
-func (ifs *IfStatus) Repost(id int64, status string, isComment int, rip string) (s *Status) {
+func (ifs *IfStatus) Repost(id int64, status string, isComment int, rip string) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("status", status)
 	p.Set("is_comment", strconv.Itoa(isComment))
 	p.Set("rip", rip)
+	s := &Status{}
 	ifs.app.PostForm("statuses/repost", p, s)
-	return
+	return s
 }
 
 //根据微博ID删除指定微博
-func (ifs *IfStatus) Destroy(id int64) (s *Status) {
+func (ifs *IfStatus) Destroy(id int64) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
+	s := &Status{}
 	ifs.app.PostForm("statuses/destroy", p, s)
-	return
+	return s
 }
 
 //发布一条新微博
-func (ifs *IfStatus) Update(status string, visible int, listId string, lat float64, long float64, annotations string, rip string) (s *Status) {
+func (ifs *IfStatus) Update(status string, visible int, listId string, lat float64, long float64, annotations string, rip string) *Status {
 	p := url.Values{}
 	p.Set("status", status)
 	p.Set("visible", strconv.Itoa(visible))
@@ -281,12 +284,13 @@ func (ifs *IfStatus) Update(status string, visible int, listId string, lat float
 	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
 	p.Set("annotations", annotations)
 	p.Set("rip", rip)
+	s := &Status{}
 	ifs.app.PostForm("statuses/update", p, s)
-	return
+	return s
 }
 
 //上传图片并发布一条新微博
-func (ifs *IfStatus) Upload(status string, visible int, listId string, pic ReadNamer, lat float64, long float64, annotations string, rip string) (s *Status) {
+func (ifs *IfStatus) Upload(status string, visible int, listId string, pic ReadNamer, lat float64, long float64, annotations string, rip string) *Status {
 	p := url.Values{}
 	p.Set("status", status)
 	p.Set("visible", strconv.Itoa(visible))
@@ -298,12 +302,13 @@ func (ifs *IfStatus) Upload(status string, visible int, listId string, pic ReadN
 	f := map[string]ReadNamer{
 		"pic": pic,
 	}
+	s := &Status{}
 	ifs.app.PostFormData("statuses/upload", p, f, s)
-	return
+	return s
 }
 
 //【高】指定一个图片URL地址抓取后上传并同时发布一条新微博
-func (ifs *IfStatus) UploadUrlText(status string, visible int, listId string, urlText string, lat float64, long float64, annotations string, rip string) (s *Status) {
+func (ifs *IfStatus) UploadUrlText(status string, visible int, listId string, urlText string, lat float64, long float64, annotations string, rip string) *Status {
 	p := url.Values{}
 	p.Set("status", status)
 	p.Set("visible", strconv.Itoa(visible))
@@ -313,12 +318,13 @@ func (ifs *IfStatus) UploadUrlText(status string, visible int, listId string, ur
 	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
 	p.Set("annotations", annotations)
 	p.Set("rip", rip)
+	s := &Status{}
 	ifs.app.PostForm("statuses/upload_url_text", p, s)
-	return
+	return s
 }
 
 //【高】使用已上传的图片发布一条新微博
-func (ifs *IfStatus) UploadPicId(status string, visible int, listId string, picId string, lat float64, long float64, annotations string, rip string) (s *Status) {
+func (ifs *IfStatus) UploadPicId(status string, visible int, listId string, picId string, lat float64, long float64, annotations string, rip string) *Status {
 	p := url.Values{}
 	p.Set("status", status)
 	p.Set("visible", strconv.Itoa(visible))
@@ -328,23 +334,26 @@ func (ifs *IfStatus) UploadPicId(status string, visible int, listId string, picI
 	p.Set("long", strconv.FormatFloat(long, 'f', 10, 64))
 	p.Set("annotations", annotations)
 	p.Set("rip", rip)
+	s := &Status{}
 	ifs.app.PostForm("statuses/upload_url_text", p, s)
-	return
+	return s
 }
 
 //【高】屏蔽某条微博
-func (ifs *IfStatus) FilterCreate(id int64) (s *Status) {
+func (ifs *IfStatus) FilterCreate(id int64) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
+	s := &Status{}
 	ifs.app.PostForm("statuses/filter/create", p, s)
-	return
+	return s
 }
 
 //【高】屏蔽某个@到我的微博以及后续由对其转发引起的@提及
-func (ifs *IfStatus) MentionsShield(id int64, followUp int) (s *Status) {
+func (ifs *IfStatus) MentionsShield(id int64, followUp int) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("follow_up", strconv.Itoa(followUp))
+	s := &Status{}
 	ifs.app.PostForm("statuses/mentions/shield", p, s)
-	return
+	return s
 }

@@ -92,22 +92,24 @@ func (ifc *IfComment) ShowBatch(cids int64) (cs []*Comment) {
 //写入接口
 
 //对一条微博进行评论
-func (ifc *IfComment) Create(comment string, id int64, commentOri int, rip string) (c *Comment) {
+func (ifc *IfComment) Create(comment string, id int64, commentOri int, rip string) *Comment {
 	p := url.Values{}
 	p.Set("comment", comment)
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("comment_ori", strconv.Itoa(commentOri))
 	p.Set("rip", rip)
+	c := &Comment{}
 	ifc.app.PostForm("comments/create", p, c)
-	return
+	return c
 }
 
 //删除一条评论
-func (ifc *IfComment) Destroy(cid int64) (c *Comment) {
+func (ifc *IfComment) Destroy(cid int64) *Comment {
 	p := url.Values{}
 	p.Set("cid", strconv.FormatInt(cid, 10))
+	c := &Comment{}
 	ifc.app.PostForm("comments/destroy", p, c)
-	return
+	return c
 }
 
 //根据评论ID批量删除评论
