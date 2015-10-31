@@ -66,3 +66,23 @@ func (a *App) PostFormData(apiName string, params url.Values, files map[string]R
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
 }
+
+func (a *App) StatusesService() *StatusesService {
+	return &StatusesService{a}
+}
+
+func (a *App) CommentsService() *CommentsService {
+	return &CommentsService{a}
+}
+
+func (a *App) UsersService() *UsersService {
+	return &UsersService{a}
+}
+
+func (a *App) SearchService() *SearchService {
+	return &SearchService{a}
+}
+
+func (a *App) RemindService() *RemindService {
+	return &RemindService{a}
+}
