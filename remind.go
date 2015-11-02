@@ -15,6 +15,7 @@ type RemindService struct{
 func (rs *RemindService) UnreadCount(uid int64) (r *Remind) {
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
+	r = &Remind{}
 	rs.c.Get("remind/unread_count", p, r)
 	return
 }
