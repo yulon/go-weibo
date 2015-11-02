@@ -27,14 +27,22 @@ func NewClient(accessToken string) *Client {
 
 func (c *Client) Get(apiName string, params url.Values, ret interface{}) {
 	params.Set("access_token", c.accessToken)
-	resp, _ := http.Get(MakeApiUrl(apiName) + "?" + params.Encode())
+	resp, err := http.Get(MakeApiUrl(apiName) + "?" + params.Encode())
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
 }
 
 func (c *Client) PostForm(apiName string, params url.Values, ret interface{}) {
 	params.Set("access_token", c.accessToken)
-	resp, _ := http.PostForm(MakeApiUrl(apiName), params)
+	resp, err := http.PostForm(MakeApiUrl(apiName), params)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
 }
@@ -59,9 +67,14 @@ func (c *Client) PostFormData(apiName string, params url.Values, files map[strin
 		io.Copy(w, f)
 	}
 
-	resp, _ := http.Post(MakeApiUrl(apiName), mw.FormDataContentType(), buf)
+	resp, err := http.Post(MakeApiUrl(apiName), mw.FormDataContentType(), buf)
 
 	mw.Close()
+
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
 
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ret)
@@ -81,6 +94,7 @@ func (c *Client) GetTokenInfo() (ti *TokenInfo) {
 	if err != nil {
 		return
 	}
+	defer resp.Body.Close()
 	ti = &TokenInfo{}
 	d := json.NewDecoder(resp.Body)
 	d.Decode(ti)

@@ -52,11 +52,10 @@ func (a *App) GetAccessToken(code string) (at *AccessToken) {
 		"code": {code},
 		"redirect_uri": {a.cb},
 	})
-
 	if err != nil {
 		return
 	}
-
+	defer resp.Body.Close()
 	at = &AccessToken{}
 	d := json.NewDecoder(resp.Body)
 	d.Decode(at)
