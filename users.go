@@ -6,7 +6,7 @@ import (
 )
 
 type UsersService struct{
-	app *App
+	c *Client
 }
 
 //读取接口
@@ -16,7 +16,7 @@ func (uss *UsersService) Show(uid int64) *User {
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
 	u := &User{}
-	uss.app.Get("users/show", p, u)
+	uss.c.Get("users/show", p, u)
 	return u
 }
 
@@ -25,7 +25,7 @@ func (uss *UsersService) ScreenNameShow(screenName string) *User {
 	p := url.Values{}
 	p.Set("screen_name", screenName)
 	u := &User{}
-	uss.app.Get("users/show", p, u)
+	uss.c.Get("users/show", p, u)
 	return u
 }
 
@@ -34,7 +34,7 @@ func (uss *UsersService) DomainShow(domain string) (u *User) {
 	p := url.Values{}
 	p.Set("domain", domain)
 	u = &User{}
-	uss.app.Get("users/domain_show", p, u)
+	uss.c.Get("users/domain_show", p, u)
 	return u
 }
 
@@ -42,7 +42,7 @@ func (uss *UsersService) DomainShow(domain string) (u *User) {
 func (uss *UsersService) Counts(uids string) (us []*UserCounts) {
 	p := url.Values{}
 	p.Set("uids", uids)
-	uss.app.Get("users/counts", p, us)
+	uss.c.Get("users/counts", p, us)
 	return
 }
 
@@ -51,6 +51,6 @@ func (uss *UsersService) ShowRank(uid int64) *UserRank {
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
 	ur := &UserRank{}
-	uss.app.Get("users/show_rank", p, ur)
+	uss.c.Get("users/show_rank", p, ur)
 	return ur
 }

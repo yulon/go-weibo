@@ -6,7 +6,7 @@ import (
 )
 
 type CommentsService struct{
-	app *App
+	c *Client
 }
 
 //读取接口
@@ -15,7 +15,7 @@ func (css *CommentsService) getComments(apiName string, param url.Values) []*Com
 	ret := &struct{
 		CommentsService []*Comment `json:"comments"`
 	}{}
-	css.app.Get(apiName, param, ret)
+	css.c.Get(apiName, param, ret)
 	return ret.CommentsService
 }
 
@@ -81,7 +81,7 @@ func (css *CommentsService) Mentions(sinceId int64, maxId int64, count int, page
 func (css *CommentsService) ShowBatch(cids int64) (cs []*Comment) {
 	p := url.Values{}
 	p.Set("cids", strconv.FormatInt(cids, 10))
-	css.app.Get("comments/show_batch", p, cs)
+	css.c.Get("comments/show_batch", p, cs)
 	return
 }
 
@@ -95,7 +95,7 @@ func (css *CommentsService) Create(comment string, id int64, commentOri int, rip
 	p.Set("comment_ori", strconv.Itoa(commentOri))
 	p.Set("rip", rip)
 	c := &Comment{}
-	css.app.PostForm("comments/create", p, c)
+	css.c.PostForm("comments/create", p, c)
 	return c
 }
 
@@ -104,7 +104,7 @@ func (css *CommentsService) Destroy(cid int64) *Comment {
 	p := url.Values{}
 	p.Set("cid", strconv.FormatInt(cid, 10))
 	c := &Comment{}
-	css.app.PostForm("comments/destroy", p, c)
+	css.c.PostForm("comments/destroy", p, c)
 	return c
 }
 
@@ -112,7 +112,7 @@ func (css *CommentsService) Destroy(cid int64) *Comment {
 func (css *CommentsService) DestroyBatch(cids string) (cs []*Comment) {
 	p := url.Values{}
 	p.Set("cids", cids)
-	css.app.PostForm("comments/destroy_batch", p, cs)
+	css.c.PostForm("comments/destroy_batch", p, cs)
 	return
 }
 
@@ -125,6 +125,6 @@ func (css *CommentsService) Reply(cid int64, id int64, comment string, withoutMe
 	p.Set("without_mention", strconv.Itoa(withoutMention))
 	p.Set("comment_ori", strconv.Itoa(commentOri))
 	p.Set("rip", rip)
-	css.app.PostForm("comments/reply", p, cs)
+	css.c.PostForm("comments/reply", p, cs)
 	return
 }

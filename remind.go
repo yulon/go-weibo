@@ -6,7 +6,7 @@ import (
 )
 
 type RemindService struct{
-	app *App
+	c *Client
 }
 
 //读取接口
@@ -15,7 +15,7 @@ type RemindService struct{
 func (rs *RemindService) UnreadCount(uid int64) (r *Remind) {
 	p := url.Values{}
 	p.Set("uid", strconv.FormatInt(uid, 10))
-	rs.app.Get("remind/unread_count", p, r)
+	rs.c.Get("remind/unread_count", p, r)
 	return
 }
 
@@ -28,6 +28,6 @@ func (rs *RemindService) SetCount(typ string) bool {
 	ret := &struct{
 		Result bool `json: result`
 	}{}
-	rs.app.PostForm("remind/set_count", p, ret)
+	rs.c.PostForm("remind/set_count", p, ret)
 	return ret.Result
 }

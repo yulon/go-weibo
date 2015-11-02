@@ -4,85 +4,61 @@ import (
 	"net/http"
 	"net/url"
 	"encoding/json"
-	"bytes"
-	"mime/multipart"
-	"io"
 )
-
-const (
-	apiVer = "https://api.weibo.com/2"
-)
-
-func MakeApiUrl(apiName string) string {
-	return apiVer + "/" + apiName + ".json"
-}
 
 type App struct{
-	accessToken string
+	key string
+	secret string
+	cb string
 }
 
-func NewApp(accessToken string) *App {
-	return &App{accessToken}
+func NewApp(appKey string, appSecret string, callbackURL string) *App {
+	return &App{
+		key: appKey,
+		secret: appSecret,
+		cb: callbackURL,
+	}
 }
 
-func (a *App) Get(apiName string, params url.Values, ret interface{}) {
-	params.Set("access_token", a.accessToken)
-	resp, _ := http.Get(MakeApiUrl(apiName) + "?" + params.Encode())
-	d := json.NewDecoder(resp.Body)
-	d.Decode(ret)
-}
-
-func (a *App) PostForm(apiName string, params url.Values, ret interface{}) {
-	params.Set("access_token", a.accessToken)
-	resp, _ := http.PostForm(MakeApiUrl(apiName), params)
-	d := json.NewDecoder(resp.Body)
-	d.Decode(ret)
-}
-
-type ReadNamer interface{
-	io.Reader
-	Name()string
-}
-
-func (a *App) PostFormData(apiName string, params url.Values, files map[string]ReadNamer, ret interface{}) {
-	params.Set("access_token", a.accessToken)
-
-	buf := bytes.NewBuffer(make([]byte, 0, 256))
-	mw := multipart.NewWriter(buf)
-
-	for n, _ := range params {
-		mw.WriteField(n, params.Get(n))
+func (a *App) MakeAuthorizeURL(state string, mobile bool) string {
+	p := url.Values{
+		"client_id": {a.key},
+		"redirect_uri": {a.cb},
+		"state": {state},
 	}
 
-	for n, f := range files {
-		w, _ := mw.CreateFormFile(n, f.Name())
-		io.Copy(w, f)
+	var preURL string
+	if mobile {
+		preURL = "https://open.weibo.cn/oauth2/authorize?"
+		p.Set("display", "mobile")
+	}else{
+		preURL = "https://api.weibo.com/oauth2/authorize?"
 	}
 
-	resp, _ := http.Post(MakeApiUrl(apiName), mw.FormDataContentType(), buf)
+	return preURL + p.Encode()
+}
 
-	mw.Close()
+type AccessToken struct{
+	AccessToken string `json:"access_token"`
+	ExpiresIn int64 `json:"expires_in"`
+	Uid string `json:"uid"`
+}
 
+func (a *App) GetAccessToken(code string) (at *AccessToken) {
+	resp, err := http.PostForm("https://api.weibo.com/oauth2/access_token", url.Values{
+		"client_id": {a.key},
+		"client_secret": {a.secret},
+		"grant_type": {"authorization_code"},
+		"code": {code},
+		"redirect_uri": {a.cb},
+	})
+
+	if err != nil {
+		return
+	}
+
+	at = &AccessToken{}
 	d := json.NewDecoder(resp.Body)
-	d.Decode(ret)
-}
-
-func (a *App) StatusesService() *StatusesService {
-	return &StatusesService{a}
-}
-
-func (a *App) CommentsService() *CommentsService {
-	return &CommentsService{a}
-}
-
-func (a *App) UsersService() *UsersService {
-	return &UsersService{a}
-}
-
-func (a *App) SearchService() *SearchService {
-	return &SearchService{a}
-}
-
-func (a *App) RemindService() *RemindService {
-	return &RemindService{a}
+	d.Decode(at)
+	return
 }

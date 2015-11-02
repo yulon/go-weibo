@@ -6,7 +6,7 @@ import (
 )
 
 type StatusesService struct{
-	app *App
+	c *Client
 }
 
 //读取接口
@@ -15,7 +15,7 @@ func (sss *StatusesService) getStatuses(apiName string, param url.Values) []*Sta
 	ret := &struct{
 		StatusesService []*Status `json:"statuses"`
 	}{}
-	sss.app.Get(apiName, param, ret)
+	sss.c.Get(apiName, param, ret)
 	return ret.StatusesService
 }
 
@@ -23,7 +23,7 @@ func (sss *StatusesService) getStatusesIds(apiName string, param url.Values) []s
 	ret := &struct{
 		StatusesService []string `json:"statuses"`
 	}{}
-	sss.app.Get(apiName, param, ret)
+	sss.c.Get(apiName, param, ret)
 	return ret.StatusesService
 }
 
@@ -182,7 +182,7 @@ func (sss *StatusesService) Show(id int64) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	s := &Status{}
-	sss.app.Get("statuses/show", p, s)
+	sss.c.Get("statuses/show", p, s)
 	return s
 }
 
@@ -203,7 +203,7 @@ func (sss *StatusesService) Querymid(id int64, typ int, isBatch int) string {
 	ret := &struct{
 		Mid string `json:"mid"`
 	}{}
-	sss.app.Get("statuses/querymid", p, ret)
+	sss.c.Get("statuses/querymid", p, ret)
 	return ret.Mid
 }
 
@@ -218,7 +218,7 @@ func (sss *StatusesService) Queryid(mid string, typ int, isBatch int, inbox int,
 	ret := &struct{
 		Id string `json:"id"`
 	}{}
-	sss.app.Get("statuses/queryid", p, ret)
+	sss.c.Get("statuses/queryid", p, ret)
 	return ret.Id
 }
 
@@ -226,7 +226,7 @@ func (sss *StatusesService) Queryid(mid string, typ int, isBatch int, inbox int,
 func (sss *StatusesService) Count(ids string) (scs []*StatusCounts) {
 	p := url.Values{}
 	p.Set("ids", ids)
-	sss.app.Get("statuses/count", p, scs)
+	sss.c.Get("statuses/count", p, scs)
 	return
 }
 
@@ -243,7 +243,7 @@ func (sss *StatusesService) Emotions(typ string, language string) (es []*Emotion
 	p := url.Values{}
 	p.Set("type", typ)
 	p.Set("language", language)
-	sss.app.Get("emotions", p, es)
+	sss.c.Get("emotions", p, es)
 	return
 }
 
@@ -257,7 +257,7 @@ func (sss *StatusesService) Repost(id int64, status string, isComment int, rip s
 	p.Set("is_comment", strconv.Itoa(isComment))
 	p.Set("rip", rip)
 	s := &Status{}
-	sss.app.PostForm("statuses/repost", p, s)
+	sss.c.PostForm("statuses/repost", p, s)
 	return s
 }
 
@@ -266,7 +266,7 @@ func (sss *StatusesService) Destroy(id int64) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	s := &Status{}
-	sss.app.PostForm("statuses/destroy", p, s)
+	sss.c.PostForm("statuses/destroy", p, s)
 	return s
 }
 
@@ -281,7 +281,7 @@ func (sss *StatusesService) Update(status string, visible int, listId string, la
 	p.Set("annotations", annotations)
 	p.Set("rip", rip)
 	s := &Status{}
-	sss.app.PostForm("statuses/update", p, s)
+	sss.c.PostForm("statuses/update", p, s)
 	return s
 }
 
@@ -299,7 +299,7 @@ func (sss *StatusesService) Upload(status string, visible int, listId string, pi
 		"pic": pic,
 	}
 	s := &Status{}
-	sss.app.PostFormData("statuses/upload", p, f, s)
+	sss.c.PostFormData("statuses/upload", p, f, s)
 	return s
 }
 
@@ -315,7 +315,7 @@ func (sss *StatusesService) UploadUrlText(status string, visible int, listId str
 	p.Set("annotations", annotations)
 	p.Set("rip", rip)
 	s := &Status{}
-	sss.app.PostForm("statuses/upload_url_text", p, s)
+	sss.c.PostForm("statuses/upload_url_text", p, s)
 	return s
 }
 
@@ -331,7 +331,7 @@ func (sss *StatusesService) UploadPicId(status string, visible int, listId strin
 	p.Set("annotations", annotations)
 	p.Set("rip", rip)
 	s := &Status{}
-	sss.app.PostForm("statuses/upload_url_text", p, s)
+	sss.c.PostForm("statuses/upload_url_text", p, s)
 	return s
 }
 
@@ -340,7 +340,7 @@ func (sss *StatusesService) FilterCreate(id int64) *Status {
 	p := url.Values{}
 	p.Set("id", strconv.FormatInt(id, 10))
 	s := &Status{}
-	sss.app.PostForm("statuses/filter/create", p, s)
+	sss.c.PostForm("statuses/filter/create", p, s)
 	return s
 }
 
@@ -350,6 +350,6 @@ func (sss *StatusesService) MentionsShield(id int64, followUp int) *Status {
 	p.Set("id", strconv.FormatInt(id, 10))
 	p.Set("follow_up", strconv.Itoa(followUp))
 	s := &Status{}
-	sss.app.PostForm("statuses/mentions/shield", p, s)
+	sss.c.PostForm("statuses/mentions/shield", p, s)
 	return s
 }
