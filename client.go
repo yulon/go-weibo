@@ -75,8 +75,15 @@ type TokenInfo struct{
 }
 
 func (c *Client) GetTokenInfo() (ti *TokenInfo) {
+	resp, err := http.PostForm("https://api.weibo.com/oauth2/get_token_info", url.Values{
+		"access_token": {c.accessToken},
+	})
+	if err != nil {
+		return
+	}
 	ti = &TokenInfo{}
-	c.PostForm("https://api.weibo.com/oauth2/get_token_info", url.Values{}, ti)
+	d := json.NewDecoder(resp.Body)
+	d.Decode(ti)
 	return
 }
 
